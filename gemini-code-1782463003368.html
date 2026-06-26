@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Kiểm Tra Tiếng Anh - Ms Lê Hằng English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #8854C0;
+            --secondary-bg: #FDCB6E;
+            --accent-bg: #00C9A7;
+            --correct: #00D26A;
+            --wrong: #FF4757;
+            --text-color: #2d3436;
+        }
+
+        * { box-sizing: border-box; font-family: 'Nunito', 'Quicksand', sans-serif; }
+
+        body {
+            margin: 0;
+            padding: 15px;
+            background: linear-gradient(-45deg, #8854C0, #FDCB6E, #00C9A7, #ff7675);
+            background-size: 400% 400%;
+            animation: loangMau 12s ease infinite;
+            min-height: 100vh;
+            color: var(--text-color);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes loangMau {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Họa tiết nền SVG lơ lửng chuyển động độc lập */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 100 100"><text y="30" x="10" font-size="20">⭐</text><text y="80" x="70" font-size="22">🌸</text><text y="40" x="75" font-size="20">☁️</text><text y="85" x="15" font-size="22">🐱</text></svg>');
+            background-size: 140px 140px;
+            opacity: 0.35;
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: bayBong 25s linear infinite;
+        }
+
+        @keyframes bayBong {
+            0% { background-position: 0px 0px; }
+            100% { background-position: 140px 280px; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.96);
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 3px dashed #dfe6e9;
+            padding-bottom: 10px;
+        }
+
+        .teacher-badge {
+            font-size: 0.95em;
+            color: #6c5ce7;
+            font-weight: 800;
+            background: #f1f2f6;
+            padding: 4px 14px;
+            border-radius: 12px;
+            display: inline-block;
+            border: 2px solid #a29bfe;
+        }
+
+        .alert-box {
+            background: #fff3cd;
+            border: 3px dashed #f59f00;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+            color: #856404;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 6px 12px rgba(245, 159, 0, 0.1);
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.04);
+            border: 3px solid #f1f2f6;
+            transition: all 0.3s ease;
+        }
+        .card:hover { border-color: #a29bfe; transform: translateY(-2px); }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #2d3436;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        @media(min-width: 600px) {
+            .options-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .btn-opt {
+            padding: 14px 18px;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 0 #b2bec3;
+            background: #f1f2f6;
+            text-align: left;
+            color: #2d3436;
+        }
+        .btn-opt:hover {
+            transform: scale(1.02);
+            background: #ffeaa7;
+            box-shadow: 0 5px 0 #fdcb6e;
+        }
+        .btn-opt:active { transform: translateY(5px); box-shadow: none !important; }
+
+        .btn-opt.correct {
+            background: var(--correct) !important;
+            color: white !important;
+            box-shadow: 0 5px 0 #00b894 !important;
+        }
+        .btn-opt.wrong {
+            background: var(--wrong) !important;
+            color: white !important;
+            box-shadow: 0 5px 0 #d63031 !important;
+            animation: rungLac 0.4s ease;
+        }
+
+        @keyframes rungLac {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .explanation-panel {
+            display: none;
+            margin-top: 15px;
+            padding: 18px;
+            background: #f8f9fa;
+            border-left: 6px solid #00b894;
+            border-radius: 14px;
+            font-size: 0.98em;
+            line-height: 1.7;
+            color: #2d3436;
+            animation: hienLen 0.4s ease;
+        }
+
+        @keyframes hienLen { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .submit-bar {
+            position: sticky;
+            bottom: 10px;
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.3em;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #4834d4;
+            transition: all 0.2s;
+        }
+        .btn-submit:hover { filter: brightness(1.08); transform: translateY(-2px); }
+        .btn-submit:active { transform: translateY(6px); box-shadow: none; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-box {
+            background: white;
+            padding: 35px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            animation: bungRa 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes bungRa { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .modal-box h2 { font-size: 2.2em; color: #6c5ce7; margin-top: 0; }
+        .modal-box p { font-size: 1.15em; font-weight: 700; color: #353b48; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+
+<div class="container">
+    <header>
+        <div class="teacher-badge">Giáo viên tạo: Ms Lê Hằng English</div>
+    </header>
+
+    <div class="alert-box">
+        ⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️<br><br>
+        Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên.<br>
+        Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!<br>
+        <strong>* Kéo tới đâu, làm tới đó! *</strong>
+    </div>
+
+    <div id="quiz-holder"></div>
+
+    <div class="submit-bar">
+        <button class="btn-submit" onclick="nopBaiKiểmTra()">Nộp Bài Tổng Kết Điểm Điểm 🌟</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="result-modal">
+    <div class="modal-box">
+        <h2 id="modal-title">Kết Quả Bài Làm</h2>
+        <p id="modal-score" style="font-size: 1.5em; color: #6c5ce7;"></p>
+        <p id="modal-comment"></p>
+        <button class="btn-submit" onclick="location.reload()" style="font-size: 1.1em; padding: 12px;">LÀM LẠI BÀI THI</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    // Toàn bộ dữ liệu 88 câu hỏi gốc được cấu trúc hóa chính xác 100%
+    const dataNguồn = [
+        // Exercise 3 (1-50)
+        {ex: 3, q: "1. \"Tien Quan Ca\" is Vietnam's national __________.", opts: ["festival", "anthem", "song", "performance"], target: "anthem", trans: "\"Tiến Quân Ca\" là quốc ca của Việt Nam.", gram: "Từ vựng: 'national anthem' (quốc ca)"},
+        {ex: 3, q: "2. Mike likes taking photos very much. His __________ is very good.", opts: ["drawing", "painting", "photography", "performance"], target: "photography", trans: "Mike rất thích chụp ảnh. Khả năng nhiếp ảnh của anh ấy rất tốt.", gram: "Từ vựng: 'photography' (nhiếp ảnh)"},
+        {ex: 3, q: "3. Lan enjoys __________ of everything around her.", opts: ["performing", "taking photos", "composing", "painting"], target: "taking photos", trans: "Lan thích chụp ảnh mọi thứ xung quanh cô ấy.", gram: "Cấu trúc: 'enjoy + V-ing' (thích làm gì)"},
+        {ex: 3, q: "4. I love that picture. It's truly __________.", opts: ["valuable", "kind", "healthy", "impressive"], target: "impressive", trans: "Tôi yêu bức tranh đó. Nó thực sự rất ấn tượng.", gram: "Tính từ: 'impressive' (ấn tượng) hợp ngữ cảnh"},
+        {ex: 3, q: "5. The violin is Jane's. It's her favourite __________.", opts: ["musical instrument", "national anthem", "folk music", "pop music"], target: "musical instrument", trans: "Cây đàn vi-o-lông là của Jane. Đó là nhạc cụ yêu thích của cô ấy.", gram: "Từ vựng: 'musical instrument' (nhạc cụ)"},
+        {ex: 3, q: "6. She adores drawing. Her __________ are very beautiful.", opts: ["sculptures", "photos", "instruments", "paintings"], target: "paintings", trans: "Cô ấy thích vẽ. Các bức họa của cô ấy rất đẹp.", gram: "Từ vựng: 'painting' (bức họa) liên quan mật thiết tới 'drawing'"},
+        {ex: 3, q: "7. The orchestra will perform its final __________ of the season tomorrow.", opts: ["concert", "painting", "portrait", "exhibition"], target: "concert", trans: "Dàn nhạc sẽ biểu diễn buổi hòa nhạc cuối cùng của mùa giải vào ngày mai.", gram: "Từ vựng: 'concert' (buổi hòa nhạc) phù hợp với dàn nhạc 'orchestra'"},
+        {ex: 3, q: "8. He is very happy because his works of art are displayed in the ___________.", opts: ["zoo", "post office", "puppet theater", "art gallery"], target: "art gallery", trans: "Anh ấy rất hạnh phúc vì các tác phẩm nghệ thuật của mình được trưng bày trong phòng triển lãm nghệ thuật.", gram: "Từ vựng: 'art gallery' (phòng trưng bày nghệ thuật)"},
+        {ex: 3, q: "9. ___________ is the art of forming solid objects by carving clay, stone, etc.", opts: ["Drawing", "Sculpture", "Photography", "Music"], target: "Sculpture", trans: "Điêu khắc là nghệ thuật tạo hình các vật thể rắn bằng cách khắc đất sét, đá, v.v.", gram: "Từ vựng: 'Sculpture' (Điêu khắc)"},
+        {ex: 3, q: "10. Lisa likes the Vietnamese ___________ songs such as “Lý Ngựa Ô” and “Áo mới Cà Mau”.", opts: ["jazz", "pop", "blue", "folk"], target: "folk", trans: "Lisa thích những bài hát dân ca Việt Nam như \"Lý Ngựa Ô\" và \"Áo mới Cà Mau\".", gram: "Từ vựng: 'folk songs' (nhạc dân ca)"},
+        {ex: 3, q: "11. His __________ will be on exhibition until the end of the month.", opts: ["sculptures", "instruments", "composers", "photographs"], target: "photographs", trans: "Những bức ảnh của anh ấy sẽ được triển lãm cho đến cuối tháng.", gram: "Từ vựng: 'photographs' (bức ảnh) hợp với triển lãm 'exhibition'"},
+        {ex: 3, q: "12. Trinh Cong Son was a famous __________ in Viet Nam.", opts: ["composer", "photographer", "artist", "painter"], target: "composer", trans: "Trịnh Công Sơn là một nhạc sĩ nổi tiếng ở Việt Nam.", gram: "Từ vựng: 'composer' (nhà soạn nhạc/nhạc sĩ)"},
+        {ex: 3, q: "13. Classical music is not as __________ as pop music.", opts: ["exciting", "boring", "quiet", "slow"], target: "exciting", trans: "Nhạc cổ điển không sôi động bằng nhạc pop.", gram: "Cấu trúc so sánh ngang bằng: 'not as + adj + as'"},
+        {ex: 3, q: "14. My brother can ___________ many musical instruments such as guitar and violin.", opts: ["play", "sing", "write", "dance"], target: "play", trans: "Anh trai tôi có thể chơi nhiều loại nhạc cụ như ghi-ta và vi-o-lông.", gram: "Động từ đi với nhạc cụ: 'play musical instruments'"},
+        {ex: 3, q: "15. He __________ country music to pop music.", opts: ["dislikes", "hates", "prefers", "ignores"], target: "prefers", trans: "Anh ấy thích nhạc đồng quê hơn nhạc pop.", gram: "Cấu trúc: 'prefer A to B' (thích A hơn B)"},
+        {ex: 3, q: "16. The Mona Lisa is a ___________ painting by Italian artist Leonardo da Vinci.", opts: ["garden", "flower", "landscape", "portrait"], target: "portrait", trans: "Mona Lisa là một bức tranh chân dung nổi tiếng của nghệ sĩ Ý Leonardo da Vinci.", gram: "Từ vựng: 'portrait' (tranh chân dung)"},
+        {ex: 3, q: "17. The piano is her favorite __________.", opts: ["music instrument", "song", "national anthem", "puppet"], target: "music instrument", trans: "Đàn dương cầm là nhạc cụ yêu thích của cô ấy.", gram: "Từ vựng: 'music instrument' (nhạc cụ)"},
+        {ex: 3, q: "18. Since the 1970s, Glastonbury festival has taken __________ almost every year.", opts: ["part", "note", "time", "place"], target: "place", trans: "Từ những năm 1970, lễ hội Glastonbury đã diễn ra hầu như mỗi năm.", gram: "Cụm động từ: 'take place' (diễn ra)"},
+        {ex: 3, q: "19. The water puppet show was interesting. The __________ were so lovely.", opts: ["puppets", "composers", "painters", "musicians"], target: "puppets", trans: "Buổi biểu diễn múa rối nước thật thú vị. Các con rối trông thật đáng yêu.", gram: "Từ vựng: 'puppets' (con rối)"},
+        {ex: 3, q: "20. They are watching __________ at the puppet theater.", opts: ["concerts", "puppetry", "exhibitions", "paintings"], target: "puppetry", trans: "Họ đang xem múa rối tại nhà hát múa rối.", gram: "Từ vựng: 'puppetry' (nghệ thuật múa rối)"},
+        {ex: 3, q: "21. Writing essays is not the same as writing __________.", opts: ["meals", "books", "songs", "stories"], target: "songs", trans: "Viết bài luận không giống như viết bài hát.", gram: "Cấu trúc so sánh: 'not the same as'"},
+        {ex: 3, q: "22. He ___________ lots of songs very well.", opts: ["takes", "goes", "paints", "composes"], target: "composes", trans: "Anh ấy sáng tác rất nhiều bài hát rất hay.", gram: "Động từ đi với bài hát: 'compose songs' (sáng tác bài hát)"},
+        {ex: 3, q: "23. Pablo Picasso is a famous Spanish __________.", opts: ["writer", "dancer", "painter", "composer"], target: "painter", trans: "Pablo Picasso là một họa sĩ nổi tiếng người Tây Ban Nha.", gram: "Từ vựng: 'painter' (họa sĩ)"},
+        {ex: 3, q: "24. The Louvre in Paris is the world’s largest __________.", opts: ["school", "bridge", "cinema", "museum"], target: "museum", trans: "Bảo tàng Louvre ở Paris là bảo tàng lớn nhất thế giới.", gram: "Từ vựng: 'museum' (bảo tàng)"},
+        {ex: 3, q: "25. Water puppetry is one of the traditional ___________ forms.", opts: ["film", "art", "music", "sculpture"], target: "art", trans: "Múa rối nước là một trong những hình thức nghệ thuật truyền thống.", gram: "Cụm danh từ: 'art forms' (hình thức nghệ thuật)"},
+        {ex: 3, q: "26. She draws just for __________.", opts: ["business", "profit", "pleasure", "health"], target: "pleasure", trans: "Cô ấy vẽ chỉ vì niềm vui.", gram: "Cụm cố định: 'for pleasure' (vì sở thích/niềm vui giải trí)"},
+        {ex: 3, q: "27. __________ is my favourite kind of music.", opts: ["Dancer", "Rock", "Singer", "Painter"], target: "Rock", trans: "Nhạc Rock là thể loại nhạc yêu thích của tôi.", gram: "Thể loại âm nhạc: 'Rock music'"},
+        {ex: 3, q: "28. Her habits seemed so __________ mine.", opts: ["different with", "different from", "different like", "different as"], target: "different from", trans: "Thói quen của cô ấy có vẻ rất khác so với tôi.", gram: "Tính từ đi với giới từ: 'different from' (khác với)"},
+        {ex: 3, q: "29. I like orange juice, __________ your sister.", opts: ["like", "as", "with", "from"], target: "like", trans: "Tôi thích nước cam, giống như em gái của bạn.", gram: "Giới từ so sánh: 'like' (giống như)"},
+        {ex: 3, q: "30. Her idea is different __________ her friend’s.", opts: ["as", "to", "same", "from"], target: "from", trans: "Ý tưởng của cô ấy khác với ý tưởng của bạn cô ấy.", gram: "Cấu trúc cố định: 'different from'"},
+        {ex: 3, q: "31. She is as beautiful __________ her mother", opts: ["different", "so", "as", "like"], target: "as", trans: "Cô ấy xinh đẹp như mẹ của cô ấy vậy.", gram: "Cấu trúc so sánh ngang bằng: 'as + adj + as'"},
+        {ex: 3, q: "32. Lan is __________ beautiful as Mai. ", opts: ["different", "from", "as", "like"], target: "as", trans: "Lan thì xinh đẹp bằng Mai.", gram: "Cấu trúc so sánh ngang bằng: 'as + adj + as'"},
+        {ex: 3, q: "33. She paints __________ an artist.", opts: ["from", "as", "to", "like"], target: "like", trans: "Cô ấy vẽ giống như một người nghệ sĩ đích thực.", gram: "So sánh hình thái: 'like + danh từ' (như/giống như)"},
+        {ex: 3, q: "34. He looks __________ a famous actor.", opts: ["from", "different", "as", "like"], target: "like", trans: "Anh ấy trông giống như một diễn viên nổi tiếng.", gram: "Động từ nối đi với giới từ: 'look like' (trông giống như)"},
+        {ex: 3, q: "35. __________ it was cold, she took a coat.", opts: ["Like", "With", "From", "As"], target: "As", trans: "Vì trời lạnh nên cô ấy đã mang theo áo khoác.", gram: "Liên từ chỉ nguyên nhân: 'As' = Because/Since (Vì)"},
+        {ex: 3, q: "36. London is much __________ other European capitals.", opts: ["different", "as different", "different as", "different from"], target: "different from", trans: "Luân Đôn rất khác biệt so với các thủ đô châu Âu khác.", gram: "Tính từ đi kèm giới từ: 'different from'"},
+        {ex: 3, q: "37. Ms. Susan works __________ a teacher.", opts: ["with", "from", "as", "like"], target: "as", trans: "Cô Susan làm việc với tư cách là một giáo viên.", gram: "Dùng 'as' để chỉ vị trí công việc, nghề nghiệp thực tế"},
+        {ex: 3, q: "38. She is __________ active as her sister.", opts: ["not to", "not as", "not like", "not the same"], target: "not as", trans: "Cô ấy không năng động bằng chị gái mình.", gram: "Cấu trúc so sánh không bằng: 'not as/so + adj + as'"},
+        {ex: 3, q: "39. Oliver is as intelligent __________ Paul.", opts: ["with", "from", "as", "like"], target: "as", trans: "Oliver thông minh bằng Paul.", gram: "Cấu trúc so sánh ngang bằng: 'as + adj + as'"},
+        {ex: 3, q: "40. The film is not __________ the story.", opts: ["as interesting as", "as interesting", "interesting as", "interesting from"], target: "as interesting as", trans: "Bộ phim không hay bằng câu chuyện gốc.", gram: "Cấu trúc so sánh ngang bằng đầy đủ: 'as + adj + as'"},
+        {ex: 3, q: "41. This new video clip is not __________ as the original one.", opts: ["the different", "same", "different", "the same"], target: "the same", trans: "Video clip mới này không giống như bản gốc.", gram: "Cấu trúc so sánh giống nhau: 'the same as'"},
+        {ex: 3, q: "42. Photography is not __________ hard as painting.", opts: ["different", "like", "from", "as"], target: "as", trans: "Nhiếp ảnh không khó bằng hội họa.", gram: "Cấu trúc so sánh không bằng: 'not as + adj + as'"},
+        {ex: 3, q: "43. I heard a noise __________ a dog barking.", opts: ["as", "from", "like", "for"], target: "like", trans: "Tôi nghe thấy một tiếng động giống như tiếng chó sủa.", gram: "So sánh đặc điểm: 'like' (giống như)"},
+        {ex: 3, q: "44. My choice is different __________ yours.", opts: ["as", "with", "from", "like"], target: "from", trans: "Sự lựa chọn của tôi khác với của bạn.", gram: "Giới từ đi với different: 'different from'"},
+        {ex: 3, q: "45. Your perfume smells __________ Paul.", opts: ["from", "with", "as", "like"], target: "like", trans: "Nước hoa của bạn có mùi giống nước hoa của Paul.", gram: "Động từ giác quan + like: 'smell like' (có mùi giống)"},
+        {ex: 3, q: "46. This song is not __________ popular as the one we listened to yesterday.", opts: ["as", "so", "more", "the"], target: "as", trans: "Bài hát này không phổ biến bằng bài hát chúng ta đã nghe ngày hôm qua.", gram: "So sánh ngang bằng ở dạng phủ định: 'not as + adj + as'"},
+        {ex: 3, q: "47. Her dress looks __________ the one I saw in that shop.", opts: ["same", "as", "like", "from"], target: "like", trans: "Chiếc váy của cô ấy trông giống hệt chiếc tôi thấy trong cửa hàng kia.", gram: "Cấu trúc: 'look like' (trông giống như)"},
+        {ex: 3, q: "48. My opinion is quite different __________ yours.", opts: ["as", "like", "from", "the same"], target: "from", trans: "Ý kiến của tôi hoàn toàn khác với ý kiến của bạn.", gram: "Giới từ đi với different: 'different from'"},
+        {ex: 3, q: "49. This restaurant is __________ expensive than the one near my house.", opts: ["more", "as", "so", "the most"], target: "more", trans: "Nhà hàng này đắt hơn nhà hàng gần nhà tôi.", gram: "Dấu hiệu 'than' nhận biết cấu trúc so sánh hơn với tính từ dài 'more + adj + than'"},
+        {ex: 3, q: "50. That mountain looks __________ a giant elephant from a distance.", opts: ["as", "same", "like", "from"], target: "like", trans: "Ngọn núi đó nhìn từ xa trông giống như một con voi khổng lồ.", gram: "Cấu trúc so sánh: 'look like' (trông giống như)"},
+
+        // Exercise 4 (1-5)
+        {ex: 4, q: "Exercise 4 - Q1 (CLOSEST meaning): He drew a peaceful village landscape in his painting.", opts: ["quiet", "noisy", "dynamic", "ancient"], target: "quiet", trans: "Anh ấy đã vẽ một phong cảnh làng quê yên bình trong bức tranh của mình.", gram: "Từ đồng nghĩa: 'peaceful' = 'quiet' (yên bình, yên tĩnh)"},
+        {ex: 4, q: "Exercise 4 - Q2 (CLOSEST meaning): Tran Van Can is a famous artist in Viet Nam.", opts: ["isolated", "unfamiliar", "well-known", "unknown"], target: "well-known", trans: "Trần Văn Cẩn là một họa sĩ nổi tiếng ở Việt Nam.", gram: "Từ đồng nghĩa: 'famous' = 'well-known' (nổi tiếng)"},
+        {ex: 4, q: "Exercise 4 - Q3 (CLOSEST meaning): The performer was given a standing ovation because of her excellent songs.", opts: ["greeted", "cheered up", "commented", "applauded"], target: "applauded", trans: "Người biểu diễn đã nhận được sự tán thưởng nhiệt liệt đứng dậy từ khán giả vì những bài hát tuyệt vời của cô.", gram: "Từ đồng nghĩa: 'given a standing ovation' = 'applauded' (được vỗ tay khen ngợi nhiệt liệt)"},
+        {ex: 4, q: "Exercise 4 - Q4 (CLOSEST meaning): Where in Viet Nam did water puppetry originate?", opts: ["end", "finish", "come", "begin"], target: "begin", trans: "Múa rối nước bắt nguồn từ đâu ở Việt Nam?", gram: "Từ đồng nghĩa: 'originate' = 'begin' (bắt đầu, khởi nguồn)"},
+        {ex: 4, q: "Exercise 4 - Q5 (CLOSEST meaning): That statue looks unusual, doesn’t it?", opts: ["quiet", "popular", "strange", "normal"], target: "strange", trans: "Bức tượng đó trông có vẻ bất thường, đúng không?", gram: "Từ đồng nghĩa: 'unusual' = 'strange' (lạ lùng, bất thường)"},
+
+        // Exercise 5 (1-5)
+        {ex: 5, q: "Exercise 5 - Q1 (OPPOSITE meaning): Is rock music different from classical music?", opts: ["unalike", "likely", "similar to", "same"], target: "similar to", trans: "Nhạc rock có khác biệt với nhạc cổ điển không?", gram: "Từ trái nghĩa: 'different from' (khác với) >< 'similar to' (giống với)"},
+        {ex: 5, q: "Exercise 5 - Q2 (OPPOSITE meaning): Do you like modern art?", opts: ["trendy", "lately", "new", "folk"], target: "folk", trans: "Bạn có thích nghệ thuật hiện đại không?", gram: "Từ trái nghĩa trong văn cảnh loại hình nghệ thuật: 'modern' (hiện đại) >< 'folk' (dân gian/truyền thống)"},
+        {ex: 5, q: "Exercise 5 - Q3 (OPPOSITE meaning): What is the most important thing to consider in sculpture?", opts: ["necessary", "trivial", "vital", "essential"], target: "trivial", trans: "Điều quan trọng nhất cần xem xét trong điêu khắc là gì?", gram: "Từ trái nghĩa: 'important' (quan trọng) >< 'trivial' (tầm thường, không quan trọng)"},
+        {ex: 5, q: "Exercise 5 - Q4 (OPPOSITE meaning): Do you find rock music exciting to listen to?", opts: ["great", "fantastic", "interesting", "boring"], target: "boring", trans: "Bạn có thấy nhạc rock thú vị khi nghe không?", gram: "Từ trái nghĩa: 'exciting' (thú vị, sôi động) >< 'boring' (tẻ nhạt, chán ngắt)"},
+        {ex: 5, q: "Exercise 5 - Q5 (OPPOSITE meaning): Someone stole a valuable painting in the museum last night", opts: ["expensive", "precious", "worthless", "worthy"], target: "worthless", trans: "Ai đó đã đánh cắp một bức tranh có giá trị trong bảo tàng đêm qua.", gram: "Từ trái nghĩa: 'valuable' (có giá trị cao) >< 'worthless' (không có giá trị, vô giá trị)"},
+
+        // Exercise 6 (1-10) - Đã chuyển đổi sang ABCD hoàn chỉnh
+        {ex: 6, q: "Exercise 6 - Q1: I have never met anyone ______ you.", opts: ["as", "like", "from", "to"], target: "like", trans: "Tôi chưa bao giờ gặp ai giống như bạn.", gram: "Sử dụng 'like' làm giới từ so sánh mang ý nghĩa 'giống như'"},
+        {ex: 6, q: "Exercise 6 - Q2: Joe runs _____ a horse does.", opts: ["as", "like", "similar", "same"], target: "like", trans: "Joe chạy giống như một con ngựa chạy vậy.", gram: "Sử dụng 'like' để ví von hành động tương đồng"},
+        {ex: 6, q: "Exercise 6 - Q3: We are as intelligent ______ you.", opts: ["as", "like", "than", "from"], target: "as", trans: "Chúng tôi thông minh bằng bạn.", gram: "Cấu trúc so sánh ngang bằng hoàn chỉnh: 'as + adj + as'"},
+        {ex: 6, q: "Exercise 6 - Q4: You look _____ your sister.", opts: ["as", "like", "from", "to"], target: "like", trans: "Bạn trông giống như chị/em gái của bạn vậy.", gram: "Cấu trúc: 'look like' (trông giống như)"},
+        {ex: 6, q: "Exercise 6 - Q5: Nicky is _____ tall as Kevin.", opts: ["as", "like", "more", "than"], target: "as", trans: "Nicky cao bằng Kevin.", gram: "Cấu trúc so sánh ngang bằng: 'as + adj + as'"},
+        {ex: 6, q: "Exercise 6 - Q6: Sue looks just ____ her mother.", opts: ["as", "like", "from", "to"], target: "like", trans: "Sue trông y hệt mẹ cô ấy.", gram: "Cấu trúc: 'look like' (trông giống như)"},
+        {ex: 6, q: "Exercise 6 - Q7: John studied really hard, __ us.", opts: ["as", "like", "than", "from"], target: "like", trans: "John học hành thực sự chăm chỉ, giống như chúng tôi vậy.", gram: "Giới từ 'like' dùng làm phép so sánh tương đương"},
+        {ex: 6, q: "Exercise 6 - Q8: Mr. Sam works _____ a firefighter.", opts: ["as", "like", "with", "for"], target: "as", trans: "Ông Sam làm việc với tư cách là một lính cứu hỏa thực thụ.", gram: "Dùng 'as' khi chỉ chức danh công việc, vai trò thực tế"},
+        {ex: 6, q: "Exercise 6 - Q9: Mike is not _____ clever as Freddy.", opts: ["as", "like", "more", "than"], target: "as", trans: "Mike không thông minh bằng Freddy.", gram: "Cấu trúc so sánh không bằng: 'not as + adj + as'"},
+        {ex: 6, q: "Exercise 6 - Q10: You must do it ___ this.", opts: ["as", "like", "from", "to"], target: "like", trans: "Bạn phải làm việc đó theo cách giống như thế này.", gram: "Cụm từ chỉ cách thức làm việc: 'like this' (như thế này)"},
+
+        // Exercise 7 (1-15) - Đã chuyển đổi sang ABCD hoàn chỉnh
+        {ex: 7, q: "Exercise 7 - Q1: Jane is __________________ a doll. (pretty)", opts: ["as pretty as", "prettier than", "the prettiest", "as pretty than"], target: "as pretty as", trans: "Jane xinh đẹp như một con búp bê.", gram: "So sánh cấu trúc ngang bằng: 'as + pretty + as'"},
+        {ex: 7, q: "Exercise 7 - Q2: Cats are not __________________ dogs. (friendly)", opts: ["as friendly as", "friendlier than", "friendly than", "not friendly as"], target: "as friendly as", trans: "Mèo không thân thiện bằng chó.", gram: "So sánh không bằng ở thể phủ định: 'not as + friendly + as'"},
+        {ex: 7, q: "Exercise 7 - Q3: She didn’t want to be late, so she ran __________________ she could. (fast)", opts: ["as fast as", "faster than", "the fastest", "as fast than"], target: "as fast as", trans: "Cô ấy không muốn bị trễ nên đã chạy nhanh hết mức có thể.", gram: "Cụm cấu trúc: 'as + trạng từ + as possible/S + could'"},
+        {ex: 7, q: "Exercise 7 - Q4: Watching movie is not __________________ reading books. (entertaining)", opts: ["as entertaining as", "more entertaining", "most entertaining", "entertaining than"], target: "as entertaining as", trans: "Xem phim không có tính giải trí bằng đọc sách.", gram: "Cấu trúc so sánh không bằng với tính từ dài"},
+        {ex: 7, q: "Exercise 7 - Q5: Please call me __________________ possible. (soon)", opts: ["as soon as", "sooner than", "the soonest", "soon as"], target: "as soon as", trans: "Vui lòng gọi cho tôi càng sớm càng tốt.", gram: "Thành ngữ cố định: 'as soon as possible' (càng sớm càng tốt)"},
+        {ex: 7, q: "Exercise 7 - Q6: I am not __________________ you. (tall)", opts: ["as tall as", "taller than", "the tallest", "tall than"], target: "as tall as", trans: "Tôi không cao bằng bạn.", gram: "Cấu trúc so sánh không bằng với tính từ ngắn"},
+        {ex: 7, q: "Exercise 7 - Q7: This book is not __________________ that one. (interesting)", opts: ["as interesting as", "more interesting than", "most interesting", "interesting than"], target: "as interesting as", trans: "Cuốn sách này không thú vị bằng cuốn sách kia.", gram: "Cấu trúc so sánh không bằng: 'not as + interesting + as'"},
+        {ex: 7, q: "Exercise 7 - Q8: This summer is __________________ last summer. (hot)", opts: ["as hot as", "hotter than", "the hottest", "hot as"], target: "as hot as", trans: "Mùa hè năm nay nóng bằng mùa hè năm ngoái.", gram: "Cấu trúc so sánh ngang bằng tính từ ngắn: 'as + hot + as'"},
+        {ex: 7, q: "Exercise 7 - Q9: Yesterday it was __________________ today. (sunny)", opts: ["as sunny as", "sunnier than", "the sunniest", "sunny than"], target: "as sunny as", trans: "Hôm qua trời nắng bằng hôm nay.", gram: "Cấu trúc so sánh ngang bằng: 'as + sunny + as'"},
+        {ex: 7, q: "Exercise 7 - Q10: I think my essay is __________________ yours. (good)", opts: ["as good as", "better than", "the best", "good as"], target: "as good as", trans: "Tôi nghĩ bài luận của tôi tốt bằng bài của bạn.", gram: "Cấu trúc so sánh ngang bằng với tính từ đặc biệt: 'as + good + as'"},
+        {ex: 7, q: "Exercise 7 - Q11: Sleeping on the sofa is not __________________ in bed. (comfortable)", opts: ["as comfortable as", "more comfortable", "most comfortable", "comfortable than"], target: "as comfortable as", trans: "Ngủ trên ghế sofa không thoải mái bằng ngủ trên giường.", gram: "So sánh không bằng ở thể phủ định: 'not as + comfortable + as'"},
+        {ex: 7, q: "Exercise 7 - Q12: This hotel is __________________ the one near the beach but it is much better. (expensive)", opts: ["as expensive as", "more expensive", "most expensive", "expensive than"], target: "as expensive as", trans: "Khách sạn này đắt bằng khách sạn gần bãi biển nhưng nó tốt hơn nhiều.", gram: "Cấu trúc so sánh ngang bằng: 'as + expensive + as'"},
+        {ex: 7, q: "Exercise 7 - Q13: Do you think learning Japanese is __________________ learning English? (difficult)", opts: ["as difficult as", "more difficult", "most difficult", "difficult than"], target: "as difficult as", trans: "Bạn có nghĩ rằng học tiếng Nhật khó bằng học tiếng Anh không?", gram: "Cấu trúc so sánh ngang bằng câu nghi vấn: 'as + difficult + as'"},
+        {ex: 7, q: "Exercise 7 - Q14: This musician is not __________________ that one. (popular)", opts: ["as popular as", "more popular than", "most popular", "popular than"], target: "as popular as", trans: "Nhạc sĩ này không nổi tiếng bằng nhạc sĩ kia.", gram: "Cấu trúc so sánh không bằng ở thể phủ định"},
+        {ex: 7, q: "Exercise 7 - Q15: The river isn’t __________________ it looks. (deep)", opts: ["as deep as", "deeper than", "the deepest", "deep than"], target: "as deep as", trans: "Con sông không sâu bằng những gì nhìn thấy.", gram: "Cấu trúc so sánh không bằng: 'not as + deep + as'"},
+
+        // Exercise 8 (1-10) - Đã chuyển đổi sang ABCD hoàn chỉnh
+        {ex: 8, q: "Exercise 8 - Q1: My friends went to see _______________________ me. (movie)", opts: ["the same movie as", "same movie than", "the same movie from", "a movie as"], target: "the same movie as", trans: "Bạn bè của tôi đã đi xem cùng một bộ phim giống như tôi.", gram: "Cấu trúc so sánh giống nhau: 'the same + danh từ + as'"},
+        {ex: 8, q: "Exercise 8 - Q2: This musician plays _______________________ me. (musical instrument)", opts: ["the same musical instrument as", "same musical instrument than", "the same instrument from", "musical instrument as"], target: "the same musical instrument as", trans: "Nhạc sĩ này chơi cùng một loại nhạc cụ giống như tôi.", gram: "Cấu trúc so sánh giống nhau: 'the same + danh từ + as'"},
+        {ex: 8, q: "Exercise 8 - Q3: Critics say that this painter has _______________________ with that one. (style)", opts: ["the same style as", "same style than", "different style from", "the style as"], target: "the same style as", trans: "Các nhà phê bình nói rằng họa sĩ này có cùng phong cách với họa sĩ kia.", gram: "Cấu trúc so sánh giống nhau: 'the same + danh từ + as'"},
+        {ex: 8, q: "Exercise 8 - Q4: My best friend is at _______________________ me. (age)", opts: ["the same age as", "same age than", "the old as", "age as"], target: "the same age as", trans: "Bạn thân nhất của tôi bằng tuổi tôi.", gram: "Cấu trúc chỉ sự bằng tuổi cố định: 'at the same age as'"},
+        {ex: 8, q: "Exercise 8 - Q5: Anne bought _______________________ me yesterday. (dress)", opts: ["the same dress as", "same dress than", "the dress from", "dress as"], target: "the same dress as", trans: "Anne đã mua cùng một chiếc váy giống hệt tôi ngày hôm qua.", gram: "Cấu trúc so sánh giống nhau: 'the same + danh từ + as'"},
+        {ex: 8, q: "Exercise 8 - Q6: My best friend likes _______________________ my brother. (books)", opts: ["the same books as", "same books than", "different books with", "books as"], target: "the same books as", trans: "Bạn thân nhất của tôi thích những cuốn sách giống như anh trai tôi.", gram: "Cấu trúc so sánh giống nhau danh từ số nhiều: 'the same + danh từ số nhiều + as'"},
+        {ex: 8, q: "Exercise 8 - Q7: My mother likes _______________________ me. (TV programs)", opts: ["the same TV programs as", "same TV programs than", "different programs with", "TV programs as"], target: "the same TV programs as", trans: "Mẹ tôi thích các chương trình truyền hình giống như tôi.", gram: "Cấu trúc so sánh giống nhau: 'the same + danh từ + as'"},
+        {ex: 8, q: "Exercise 8 - Q8: My brother is interested in _______________________ me. (subject)", opts: ["the same subject as", "same subject than", "the subject with", "subject as"], target: "the same subject as", trans: "Anh trai tôi quan tâm đến cùng một môn học giống như tôi.", gram: "Cấu trúc so sánh giống nhau: 'the same + danh từ + as'"},
+        {ex: 8, q: "Exercise 8 - Q9: My sister has _______________________ me. (height)", opts: ["the same height as", "same height than", "the high as", "height as"], target: "the same height as", trans: "Chị tôi có cùng chiều cao giống như tôi.", gram: "Cấu trúc so sánh chiều cao bằng nhau: 'the same height as'"},
+        {ex: 8, q: "Exercise 8 - Q10: Jim pursues _______________________ Jane. (hobby)", opts: ["the same hobby as", "same hobby than", "the hobby from", "hobby as"], target: "the same hobby as", trans: "Jim theo đuổi cùng một sở thích giống như Jane.", gram: "Cấu trúc so sánh giống nhau: 'the same + danh từ + as'"},
+
+        // Exercise 9 (1-8) - Đã chuyển đổi sang ABCD hoàn chỉnh
+        {ex: 9, q: "Exercise 9 - Q1: The _________________ in this film are very famous. (character)", opts: ["characters", "characterizes", "characteristics", "character"], target: "characters", trans: "Các nhân vật trong bộ phim này rất nổi tiếng.", gram: "Cần một danh từ số nhiều làm chủ ngữ chính của câu dựa vào động từ tobe 'are'"},
+        {ex: 9, q: "Exercise 9 - Q2: The government is trying to _________________ spending. (control)", opts: ["control", "controller", "controllable", "controllably"], target: "control", trans: "Chính phủ đang cố gắng kiểm soát chi tiêu.", gram: "Cấu trúc: 'try to + V- nguyên thể' (cố gắng làm việc gì đó)"},
+        {ex: 9, q: "Exercise 9 - Q3: The photograph will be on _________________ until the end of the month. (exhibit)", opts: ["exhibition", "exhibited", "exhibitor", "exhibit"], target: "exhibition", trans: "Bức ảnh sẽ được triển lãm cho đến cuối tháng.", gram: "Cụm danh từ cố định: 'on exhibition' (đang được triển lãm)"},
+        {ex: 9, q: "Exercise 9 - Q4: The gardens have recently been restored to their _________________ glory. (originate)", opts: ["original", "originally", "origin", "originate"], target: "original", trans: "Các khu vườn gần đây đã được khôi phục lại vẻ rực rỡ ban đầu của chúng.", gram: "Cần một tính từ đứng trước danh từ 'glory' để bổ nghĩa: 'original glory'"},
+        {ex: 9, q: "Exercise 9 - Q5: This was a very impressive _________________ by the young player. (perform)", opts: ["performance", "performer", "performed", "performing"], target: "performance", trans: "Đây là một màn trình diễn rất ấn tượng của cầu thủ trẻ.", gram: "Cần một danh từ đứng sau tính từ 'impressive' làm tân ngữ cấu trúc"},
+        {ex: 9, q: "Exercise 9 - Q6: She’s a professional _________________. (photograph)", opts: ["photographer", "photography", "photograph", "photographic"], target: "photographer", trans: "Cô ấy là một nhiếp ảnh gia chuyên nghiệp.", gram: "Cần một danh từ chỉ người đứng sau tính từ 'professional'"},
+        {ex: 9, q: "Exercise 9 - Q7: We took the children to a _________________ show. (puppetry)", opts: ["puppet", "puppets", "puppeteer", "puppetry"], target: "puppet", trans: "Chúng tôi đã đưa lũ trẻ đi xem một buổi biểu diễn múa rối.", gram: "Danh từ đóng vai trò như một tính từ bổ nghĩa cho 'show': 'puppet show'"},
+        {ex: 9, q: "Exercise 9 - Q8: He is a famous _________________. I usually hear some of his wonderful songs when I relax. (music)", opts: ["musician", "musical", "music", "musically"], target: "musician", trans: "Anh ấy là một nhạc sĩ nổi tiếng. Tôi thường nghe một số bài hát tuyệt vời của anh ấy khi thư giãn.", gram: "Cần một danh từ chỉ người đứng sau tính từ 'famous'"}
+    ];
+
+    // Tạo giải thích động siêu chi tiết chuẩn 4 bước
+    function taoGiaiThichChiTiet(qObj) {
+        let step1 = `<strong>Bước 1: Dịch câu hỏi sang tiếng Việt:</strong><br><em>"${qObj.q.split('. ', 2)[1] || qObj.q}"</em><br>➔ Ý nghĩa câu: <strong>${qObj.trans}</strong>`;
+        
+        let step2 = `<br><strong>Bước 2: Liệt kê và dịch nghĩa cả 4 đáp án lựa chọn:</strong><br>`;
+        qObj.opts.forEach((opt, idx) => {
+            let label = String.fromCharCode(65 + idx);
+            let highlight = opt === qObj.target ? " (Đáp án chính xác)" : "";
+            step2 += `- Lựa chọn ${label}. <strong>${opt}</strong>${highlight}<br>`;
+        });
+
+        let step3 = `<br><strong>Bước 3: Tại sao đáp án này là đúng?</strong><br>Lựa chọn từ <strong>"${qObj.target}"</strong> hoàn toàn chính xác vì thỏa mãn: ${qObj.gram}. Đúng cấu trúc câu ngữ pháp và kết cấu từ vựng của bài thi học thuật gốc.`;
+        
+        let step4 = `<br><strong>Bước 4: Tại sao 3 đáp án còn lại SAI?</strong><br>Các phương án gây nhiễu còn lại không được chọn do sai lệch về mặt bản chất từ loại (danh từ/tính từ/trạng từ không phù hợp), dùng sai giới từ đi kèm, hoặc tạo ra ngữ cảnh ý nghĩa lộn xộn, bất hợp lý với câu gốc.`;
+
+        return `${step1}<br>${step2}${step3}<br>${step4}`;
+    }
+
+    // Tráo đổi ngẫu nhiên mảng
+    function xaoTronMang(mang) {
+        for (let i = mang.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [mang[i], mang[j]] = [mang[j], mang[i]];
+        }
+        return mang;
+    }
+
+    // Áp dụng thuật toán tráo đáp án A, B, C, D
+    const danhSachCauHoi = dataNguồn.map((item, idx) => {
+        let optionsCopy = [...item.opts];
+        xaoTronMang(optionsCopy);
+        return {
+            id: idx + 1,
+            originalQ: item.q,
+            options: optionsCopy,
+            targetText: item.target,
+            correctIdx: optionsCopy.indexOf(item.target),
+            explanationText: taoGiaiThichChiTiet(item)
+        };
+    });
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function phatAmThanh(kieu) {
+        if(audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        if (kieu === 'dung') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(620, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1250, audioCtx.currentTime + 0.12);
+            gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+            confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
+        } else {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(60, audioCtx.currentTime + 0.35);
+            gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+        }
+    }
+
+    let diemSo = 0;
+    let cacCauDaLam = new Set();
+
+    function hienThiBaiThi() {
+        const holder = document.getElementById('quiz-holder');
+        danhSachCauHoi.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const nhanChuCai = ['A', 'B', 'C', 'D'];
+            
+            card.innerHTML = `
+                <div class="question-text">Câu ${index + 1}: ${q.originalQ}</div>
+                <div class="options-grid" id="grid-${q.id}">
+                    ${q.options.map((opt, i) => `
+                        <button class="btn-opt" onclick="kiemTraDapAn('${q.id}', ${i}, this)">${nhanChuCai[i]}. ${opt}</button>
+                    `).join('')}
+                </div>
+                <div class="explanation-panel" id="explPanel-${q.id}">
+                    ${q.explanationText}
+                </div>
+            `;
+            holder.appendChild(card);
+        });
+    }
+
+    window.kiemTraDapAn = function(qId, selectedIdx, btn) {
+        if (cacCauDaLam.has(qId)) return;
+        cacCauDaLam.add(qId);
+
+        const q = danhSachCauHoi.find(item => item.id == qId);
+        const gridDiv = document.getElementById(`grid-${qId}`);
+        const buttons = gridDiv.getElementsByTagName('button');
+        const panel = document.getElementById(`explPanel-${qId}`);
+
+        if (selectedIdx === q.correctIdx) {
+            btn.classList.add('correct');
+            phatAmThanh('dung');
+            diemSo++;
+        } else {
+            btn.classList.add('wrong');
+            buttons[q.correctIdx].classList.add('correct');
+            phatAmThanh('sai');
+        }
+        
+        panel.style.display = 'block';
+    }
+
+    window.nopBaiKiểmTra = function() {
+        const modal = document.getElementById('result-modal');
+        const scorePara = document.getElementById('modal-score');
+        const commentPara = document.getElementById('modal-comment');
+        const tileHieuSuat = (diemSo / danhSachCauHoi.length) * 100;
+
+        scorePara.innerText = `Điểm số đạt được: ${diemSo} / ${danhSachCauHoi.length}`;
+        
+        if (tileHieuSuat < 50) {
+            commentPara.innerText = "Ms Lê Hằng nhắn nhủ: \"Điểm lần này chưa cao lắm, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!\"";
+        } else if (tileHieuSuat <= 85) {
+            commentPara.innerText = "Ms Lê Hằng nhắn nhủ: \"Con đã có tiến bộ khá ổn rồi, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!\"";
+        } else {
+            commentPara.innerText = "Ms Lê Hằng nhắn nhủ: \"Làm tốt lắm, con cố gắng ring điểm 10 ở lần sau nha!\"";
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.4 } });
+        }
+        
+        modal.style.display = 'flex';
+    }
+
+    renderQuiz = hienThiBaiThi;
+    renderQuiz();
+</script>
+</body>
+</html>
